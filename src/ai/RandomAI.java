@@ -1,28 +1,27 @@
 package ai;
 
 import tictactoe.Board;
-import java.util.Random;
+import java.lang.Math;
 import java.util.ArrayList;
 
 public class RandomAI {
 
-    private Random randomGenerator;
     public RandomAI() {}
 
-    public int[] chooseMove(Board state) {
-        int size = state.getSize();
-        Board.Player[][] board = state.getState();
+    public int[] chooseMove(Board board) {
+        int size = board.getSize();
         ArrayList<int[]> legal_moves = new ArrayList<int[]>();
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if (state.isLegalMove(i, j)) {
+                if (board.isLegalMove(i, j)) {
                     int[] move = {i, j};
                     legal_moves.add(move);
                 }
             }
         }
-        int index = randomGenerator.nextInt(legal_moves.size());
-        return legal_moves.get(index);
+
+        int[] move = legal_moves.get((int) Math.random()*legal_moves.size());
+        return move;
     }
 
 }

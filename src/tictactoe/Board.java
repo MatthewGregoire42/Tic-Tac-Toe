@@ -27,11 +27,16 @@ public class Board {
         return board[x][y] == null;
     }
 
-    public void move(Player player, int x, int y) {
+    public void applyMove(int x, int y) {
         if (isLegalMove(x, y)) {
-            board[x][y] = player;
+            board[x][y] = turn;
         } else {
             throw new RuntimeException("Attempted illegal move at " + x + ", " + y);
+        }
+        if (turn == Player.X) {
+            turn = Player.O;
+        } else {
+            turn = Player.X;
         }
     }
 
