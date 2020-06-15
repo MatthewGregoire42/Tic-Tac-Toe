@@ -7,9 +7,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.canvas.Canvas?>
 
-<VBox prefWidth="600" prefHeight="600" xmlns:fx="http://javafx.com/fxml" fx:controller="gui.PlayController">
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="gui.PlayController" alignment="CENTER">
     <Canvas fx:id="canvas">
         <height>600</height>
         <width>600</width>
     </Canvas>
+    <prefWidth>600</prefWidth>
+    <prefHeight>600</prefHeight>
 </VBox>

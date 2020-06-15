@@ -40,6 +40,7 @@ public class PlayController {
         // Start up a new game
         gameboard = new Board(3);
 
+        // This is where we'll draw the game as it progresses
         gc = canvas.getGraphicsContext2D();
 
         // draw the grid
@@ -50,6 +51,16 @@ public class PlayController {
         gc.strokeLine(2*X_DIM/3, 0, 2*X_DIM/3, Y_DIM);
         gc.strokeLine(0, Y_DIM/3, X_DIM, Y_DIM/3);
         gc.strokeLine(0, 2*Y_DIM/3, X_DIM, 2*Y_DIM/3);
+
+        // Handle human moves
+        canvas.setOnMouseClicked(e -> {
+            if (((gameboard.getTurn().equals(Board.Player.X) && player_X.equals("human"))) ||
+                (gameboard.getTurn().equals(Board.Player.O) && player_O.equals("human"))) {
+                int x = (int) (e.getX() / (X_DIM/3));
+                int y = (int) (e.getY() / (Y_DIM/3));
+                humanMove(x,y);
+            }
+        });
     }
 
     private void humanMove(int x, int y) {
@@ -59,6 +70,7 @@ public class PlayController {
         }
     }
 
+    // TODO: Make this general for any board size
     private void drawMarker(int x, int y, Board.Player player) {
         if (player.equals(Board.Player.X)) {
             int x_start1 = X_DIM / 9 + (x * X_DIM) / 3;
