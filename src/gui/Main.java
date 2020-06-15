@@ -2,6 +2,8 @@ package gui;
 
 import ai.RandomAI;
 import javafx.application.Application;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,7 +15,9 @@ import javafx.scene.canvas.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 import tictactoe.Board;
+import javafx.scene.layout.VBox;
 
+import java.io.*;
 import java.util.Random;
 
 public class Main extends Application {
@@ -22,32 +26,12 @@ public class Main extends Application {
     public static final int Y_DIM = 600;
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception {
+        FXMLLoader start_loader = new FXMLLoader(getClass().getResource("Start.fxml"));
+        VBox vbox_start = start_loader.<VBox>load();
+        Scene scene = new Scene(vbox_start, X_DIM, Y_DIM);
 
-        Board ticTacToe = new Board(3);
-        RandomAI bot = new RandomAI();
-
-        primaryStage.setTitle("Drawing Operations Test");
-        Group root = new Group();
-        Canvas canvas = new Canvas(X_DIM, Y_DIM);
-
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        drawShapes(gc);
-
-        canvas.setOnMouseClicked(e -> {
-            int x = (int) (e.getX() / (X_DIM/3));
-            int y = (int) (e.getY() / (Y_DIM/3));
-
-            drawX(gc, x, y);
-            ticTacToe.applyMove(x, y);
-
-            int[] bot_move = bot.chooseMove(ticTacToe);
-            ticTacToe.applyMove(bot_move[0], bot_move[1]);
-            drawO(gc, bot_move[0], bot_move[1]);
-        });
-
-        root.getChildren().add(canvas);
-        primaryStage.setScene(new Scene(root));
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
@@ -78,21 +62,8 @@ public class Main extends Application {
         gc.strokeOval((x*X_DIM)/3 + X_DIM/9, (y*Y_DIM)/3 + Y_DIM/9, X_DIM/9, Y_DIM/9);
     }
 
-//    @Override
-//    public void start(Stage primaryStage) throws Exception{
-//        // Sets window title
-//        primaryStage.setTitle("Hello World");
-//        StackPane layout = new StackPane();
-//
-//
-//        layout.getChildren().add(new Button("Click here"));
-//
-//        primaryStage.setScene(new Scene(layout, 300, 300));
-//        primaryStage.show();
-//    }
-
-
     public static void main(String[] args) {
+        System.out.println(System.getProperty("user.dir"));
         launch(args);
     }
 }
