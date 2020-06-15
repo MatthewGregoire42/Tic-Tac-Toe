@@ -17,8 +17,8 @@
         <RadioButton text="X" toggleGroup="$player" fx:id="x_button"/>
         <RadioButton text="O" toggleGroup="$player" fx:id="o_button"/>
     </HBox>
-    <Button text="Play!" alignment="CENTER"/>
-    <Button text="About" alignment="CENTER"/>
+    <Button text="Play!" onAction="#pressPlay" alignment="CENTER"/>
+    <Button text="About" onAction="#pressAbout" alignment="CENTER"/>
 
     <prefHeight>600</prefHeight>
     <prefWidth>600</prefWidth>

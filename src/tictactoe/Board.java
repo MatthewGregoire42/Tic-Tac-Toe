@@ -9,7 +9,7 @@ public class Board {
     private int size;
     private Player[][] board;
     // Who needs to go next
-    public Player turn;
+    private Player turn;
 
     public Board(int _size) {
         size = _size;
@@ -96,6 +96,10 @@ public class Board {
 
     public int getSize() {
         return size;
+    }
+
+    public Player getTurn() {
+        return turn;
     }
 
     public Board copy() {
