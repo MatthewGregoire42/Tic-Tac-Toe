@@ -1,12 +1,25 @@
 package gui;
 
 import ai.RandomAI;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.paint.Color;
 
 import static gui.Main.X_DIM;
 import static gui.Main.Y_DIM;
+import javafx.scene.paint.ImagePattern;
+import javafx.stage.Stage;
 import tictactoe.Board;
 import tictactoe.Board.*;
 
@@ -20,6 +33,7 @@ public class PlayController {
     public GraphicsContext gc;
 
     // Sets who is playing: HvH, HvB, or BvB, and the human's player.
+    // Called by the StartController to pass in information.
     public void setOptions(String who_is, String player_is) {
         if (who_is.equals("HvH")) {
             player_X = AgentType.HUMAN;
@@ -36,10 +50,16 @@ public class PlayController {
             player_X = AgentType.BOT;
             player_O = AgentType.BOT;
         }
-        // We can't set these values in the Board constructor,
+        // We can't set these values in the Board
+        // constructor, or in initialize(),
         // so we have to be sure to set them here.
         gameboard.setPlayer(Player.X, player_X);
         gameboard.setPlayer(Player.O, player_O);
+
+        // Start the game off if a bot is X.
+        if (player_X.equals(AgentType.BOT)) {
+            nextMove();
+        }
     }
 
     public void initialize() {
@@ -64,32 +84,40 @@ public class PlayController {
             if (gameboard.whoHasTheTurn().equals(AgentType.HUMAN)) {
                 int x = (int) (e.getX() / (X_DIM/3));
                 int y = (int) (e.getY() / (Y_DIM/3));
-                humanMove(x,y);
+                humanMove(x, y);
             }
         });
     }
 
+    // Takes a human move, draws it on the screen,
+    // and applies it to the board. Then check if we
+    // need to handle a bot move or the end of the game.
+    // Called when the screen is clicked.
     private void humanMove(int x, int y) {
         if (gameboard.isLegalMove(x,y)) {
             drawMarker(x, y, gameboard.getTurn());
             gameboard.applyMove(x,y);
             // Handle the next move, if it's a bot move.
-            nextMove();
+            if (gameboard.isOver()) {
+                transitionToFinish();
+            } else {
+                nextMove();
+            }
         }
     }
 
+    // Applies a bot move, if necessary.
     private void nextMove() {
         if (gameboard.isOver()) {
             transitionToFinish();
-            return;
-        }
-
-        // If the bot needs to make a move, then let it.
-        if (gameboard.whoHasTheTurn().equals(AgentType.BOT)) {
-            int[] move = RandomAI.chooseMove(gameboard);
-            drawMarker(move[0], move[1], gameboard.getTurn());
-            gameboard.applyMove(move[0], move[1]);
-            nextMove();
+        } else {
+            // If the bot needs to make a move, then let it.
+            if (gameboard.whoHasTheTurn().equals(AgentType.BOT)) {
+                int[] move = RandomAI.chooseMove(gameboard);
+                drawMarker(move[0], move[1], gameboard.getTurn());
+                gameboard.applyMove(move[0], move[1]);
+                nextMove();
+            }
         }
     }
 
@@ -111,8 +139,27 @@ public class PlayController {
         }
     }
 
-    // TODO: Implement this
     private void transitionToFinish() {
+        // 1. Take a picture of the final board state, to use as a background to the finish scene.
+        Image finalState = canvas.snapshot(new SnapshotParameters(), null);
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("Finish.fxml"));
+
+        // 2. Let the finish controller know who won the game and what to use as a background.
+        Parent finishParent;
+        try {
+            finishParent = loader.load();
+        } catch (Exception exception) {
+            finishParent = null;
+        }
+        FinishController finishController = loader.getController();
+        finishController.setOptions(gameboard.findWinner(), finalState);
+
+        // 3. Display the finish scene in the window.
+        Scene finishScene = new Scene(finishParent);
+        Stage window = (Stage) canvas.getScene().getWindow();
+        window.setScene(finishScene);
 
     }
 

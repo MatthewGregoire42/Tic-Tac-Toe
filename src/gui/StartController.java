@@ -56,14 +56,16 @@ public class StartController {
         Parent playParent = loader.load();
 
         PlayController playController = loader.getController();
-        playController.setOptions(who_is, player_is);
 
         Scene playScene = new Scene(playParent);
         Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
         window.setScene(playScene);
+
+        playController.setOptions(who_is, player_is);
     }
 
     // What to do when the user presses the "about" button.
+    // TODO: Implement this
     public void pressAbout() {
 
     }

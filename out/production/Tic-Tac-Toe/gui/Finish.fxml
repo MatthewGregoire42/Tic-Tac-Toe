@@ -5,3 +5,20 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="gui.FinishController">
+    <ImageView fx:id="imgView"
+               disable="false"
+               preserveRatio="true" />
+    <VBox spacing="40"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:id="vbox">
+        <Label text="Game over!"/>
+        <Label fx:id="label"/>
+
+        <prefWidth>600</prefWidth>
+        <prefHeight>600</prefHeight>
+        <alignment>CENTER</alignment>
+    </VBox>
+</StackPane>
