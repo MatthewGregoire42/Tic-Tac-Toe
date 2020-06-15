@@ -1,20 +1,30 @@
 package tictactoe;
 
+import java.util.HashMap;
+
 public class Board {
 
     public enum Player {
         X, O;
     }
 
+    public enum AgentType {
+        HUMAN, BOT;
+    }
+
     private int size;
     private Player[][] board;
     // Who needs to go next
     private Player turn;
+    private HashMap<Player, AgentType> identities;
 
-    public Board(int _size) {
-        size = _size;
-        board = new Player[size][size];
-        turn = Player.X;
+    public Board(int size) {
+
+        this.size = size;
+        this.board = new Player[size][size];
+        this.turn = Player.X;
+
+        this.identities = new HashMap<Player, AgentType>();
     }
 
     private Board(int _size, Player[][] _board, Player _turn) {
@@ -100,6 +110,18 @@ public class Board {
 
     public Player getTurn() {
         return turn;
+    }
+
+    public HashMap<Player, AgentType> getIdentities() {
+        return identities;
+    }
+
+    public void setPlayer(Player key, AgentType value) {
+        identities.put(key, value);
+    }
+
+    public AgentType whoHasTheTurn() {
+        return identities.get(turn);
     }
 
     public Board copy() {

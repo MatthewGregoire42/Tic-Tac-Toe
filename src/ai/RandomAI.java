@@ -8,7 +8,7 @@ public class RandomAI {
 
     public RandomAI() {}
 
-    public int[] chooseMove(Board board) {
+    public static int[] chooseMove(Board board) {
         int size = board.getSize();
         ArrayList<int[]> legal_moves = new ArrayList<int[]>();
         for (int i = 0; i < size; i++) {

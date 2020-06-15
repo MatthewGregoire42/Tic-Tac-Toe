@@ -1,5 +1,6 @@
 package gui;
 
+import ai.RandomAI;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -7,11 +8,12 @@ import javafx.scene.paint.Color;
 import static gui.Main.X_DIM;
 import static gui.Main.Y_DIM;
 import tictactoe.Board;
+import tictactoe.Board.*;
 
 public class PlayController {
 
-    private String player_X;
-    private String player_O;
+    private AgentType player_X;
+    private AgentType player_O;
     private Board gameboard;
 
     public Canvas canvas = new Canvas();
@@ -20,20 +22,24 @@ public class PlayController {
     // Sets who is playing: HvH, HvB, or BvB, and the human's player.
     public void setOptions(String who_is, String player_is) {
         if (who_is.equals("HvH")) {
-            player_X = "human";
-            player_O = "human";
+            player_X = AgentType.HUMAN;
+            player_O = AgentType.HUMAN;
         } else if (who_is.equals("HvB")) {
             if (player_is.equals("X")) {
-                player_X = "human";
-                player_O = "bot";
+                player_X = AgentType.HUMAN;
+                player_O = AgentType.BOT;
             } else {
-                player_X = "bot";
-                player_O = "human";
+                player_X = AgentType.BOT;
+                player_O = AgentType.HUMAN;
             }
         } else {
-            player_X = "bot";
-            player_O = "bot";
+            player_X = AgentType.BOT;
+            player_O = AgentType.BOT;
         }
+        // We can't set these values in the Board constructor,
+        // so we have to be sure to set them here.
+        gameboard.setPlayer(Player.X, player_X);
+        gameboard.setPlayer(Player.O, player_O);
     }
 
     public void initialize() {
@@ -54,8 +60,8 @@ public class PlayController {
 
         // Handle human moves
         canvas.setOnMouseClicked(e -> {
-            if (((gameboard.getTurn().equals(Board.Player.X) && player_X.equals("human"))) ||
-                (gameboard.getTurn().equals(Board.Player.O) && player_O.equals("human"))) {
+            // Make sure that the player is actually human before proceeding
+            if (gameboard.whoHasTheTurn().equals(AgentType.HUMAN)) {
                 int x = (int) (e.getX() / (X_DIM/3));
                 int y = (int) (e.getY() / (Y_DIM/3));
                 humanMove(x,y);
@@ -67,12 +73,29 @@ public class PlayController {
         if (gameboard.isLegalMove(x,y)) {
             drawMarker(x, y, gameboard.getTurn());
             gameboard.applyMove(x,y);
+            // Handle the next move, if it's a bot move.
+            nextMove();
+        }
+    }
+
+    private void nextMove() {
+        if (gameboard.isOver()) {
+            transitionToFinish();
+            return;
+        }
+
+        // If the bot needs to make a move, then let it.
+        if (gameboard.whoHasTheTurn().equals(AgentType.BOT)) {
+            int[] move = RandomAI.chooseMove(gameboard);
+            drawMarker(move[0], move[1], gameboard.getTurn());
+            gameboard.applyMove(move[0], move[1]);
+            nextMove();
         }
     }
 
     // TODO: Make this general for any board size
-    private void drawMarker(int x, int y, Board.Player player) {
-        if (player.equals(Board.Player.X)) {
+    private void drawMarker(int x, int y, Player player) {
+        if (player.equals(Player.X)) {
             int x_start1 = X_DIM / 9 + (x * X_DIM) / 3;
             int y_start1 = Y_DIM / 9 + (y * Y_DIM) / 3;
             int x_end1 = 2 * X_DIM / 9 + (x * X_DIM) / 3;
@@ -86,6 +109,11 @@ public class PlayController {
         } else {
             gc.strokeOval((x*X_DIM)/3 + X_DIM/9, (y*Y_DIM)/3 + Y_DIM/9, X_DIM/9, Y_DIM/9);
         }
+    }
+
+    // TODO: Implement this
+    private void transitionToFinish() {
+
     }
 
 }
