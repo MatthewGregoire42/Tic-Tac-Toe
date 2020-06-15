@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
+import tictactoe.Board;
+import tictactoe.Board.*;
 
 public class StartController {
 
@@ -18,6 +20,9 @@ public class StartController {
     public RadioButton bvb_button = new RadioButton();
     public RadioButton x_button = new RadioButton();
     public RadioButton o_button = new RadioButton();
+
+    private AgentType player_X;
+    private AgentType player_O;
 
     public void initialize() {
         hvh_button.setToggleGroup(who);
@@ -35,20 +40,20 @@ public class StartController {
         RadioButton who_is_button = (RadioButton) who.getSelectedToggle();
         RadioButton player_is_button = (RadioButton) player.getSelectedToggle();
 
-        String who_is, player_is;
-
         if (who_is_button.equals(hvh_button)) {
-            who_is = "HvH";
+            player_X = AgentType.HUMAN;
+            player_O = AgentType.HUMAN;
         } else if (who_is_button.equals(hvb_button)) {
-            who_is = "HvB";
+            if (player_is_button.equals(x_button)) {
+                player_X = AgentType.HUMAN;
+                player_O = AgentType.BOT;
+            } else {
+                player_X = AgentType.BOT;
+                player_O = AgentType.HUMAN;
+            }
         } else {
-            who_is = "BvB";
-        }
-
-        if (player_is_button.equals(x_button)) {
-            player_is = "X";
-        } else {
-            player_is = "O";
+            player_X = AgentType.BOT;
+            player_O = AgentType.BOT;
         }
 
         FXMLLoader loader = new FXMLLoader();
@@ -61,13 +66,20 @@ public class StartController {
         Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
         window.setScene(playScene);
 
-        playController.setOptions(who_is, player_is);
+        playController.setOptions(player_X, player_O);
     }
 
     // What to do when the user presses the "about" button.
-    // TODO: Implement this
-    public void pressAbout() {
+    public void pressAbout(ActionEvent e) throws Exception {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("About.fxml"));
+        Parent aboutParent = loader.load();
 
+        AboutController aboutController = loader.getController();
+
+        Scene aboutScene = new Scene(aboutParent);
+        Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
+        window.setScene(aboutScene);
     }
 
 }

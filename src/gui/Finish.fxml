@@ -16,6 +16,8 @@
           fx:id="vbox">
         <Label text="Game over!"/>
         <Label fx:id="label"/>
+        <Button text="Replay" onAction="#backToPlay"/>
+        <Button text="Back to Menu" onAction="#backToStart"/>
 
         <prefWidth>600</prefWidth>
         <prefHeight>600</prefHeight>

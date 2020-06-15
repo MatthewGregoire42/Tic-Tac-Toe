@@ -34,22 +34,9 @@ public class PlayController {
 
     // Sets who is playing: HvH, HvB, or BvB, and the human's player.
     // Called by the StartController to pass in information.
-    public void setOptions(String who_is, String player_is) {
-        if (who_is.equals("HvH")) {
-            player_X = AgentType.HUMAN;
-            player_O = AgentType.HUMAN;
-        } else if (who_is.equals("HvB")) {
-            if (player_is.equals("X")) {
-                player_X = AgentType.HUMAN;
-                player_O = AgentType.BOT;
-            } else {
-                player_X = AgentType.BOT;
-                player_O = AgentType.HUMAN;
-            }
-        } else {
-            player_X = AgentType.BOT;
-            player_O = AgentType.BOT;
-        }
+    public void setOptions(AgentType x, AgentType o) {
+        player_X = x;
+        player_O = o;
         // We can't set these values in the Board
         // constructor, or in initialize(),
         // so we have to be sure to set them here.
@@ -154,7 +141,7 @@ public class PlayController {
             finishParent = null;
         }
         FinishController finishController = loader.getController();
-        finishController.setOptions(gameboard.findWinner(), finalState);
+        finishController.setOptions(gameboard.findWinner(), finalState, player_X, player_O);
 
         // 3. Display the finish scene in the window.
         Scene finishScene = new Scene(finishParent);
