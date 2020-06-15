@@ -7,7 +7,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.canvas.Canvas?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="gui.PlayController" alignment="CENTER">
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="gui.PlayController" alignment="CENTER"
+      fx:id="vbox">
     <Canvas fx:id="canvas">
         <height>600</height>
         <width>600</width>

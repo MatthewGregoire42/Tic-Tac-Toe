@@ -1,6 +1,7 @@
 package gui;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -16,9 +17,9 @@ import tictactoe.Board.*;
 
 public class FinishController {
 
-    public VBox vbox;
-    public Label label;
-    public ImageView imgView;
+    @FXML private VBox vbox;
+    @FXML private Label label;
+    @FXML private ImageView imgView;
 
     private AgentType player_X;
     private AgentType player_O;
@@ -37,7 +38,6 @@ public class FinishController {
                 CornerRadii.EMPTY, Insets.EMPTY);
         Background background = new Background(background_fill);
         vbox.setBackground(background);
-        vbox.setOpacity(0.98);
         imgView.setImage(image);
     }
 

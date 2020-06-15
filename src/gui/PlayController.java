@@ -1,6 +1,7 @@
 package gui;
 
 import ai.RandomAI;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -10,10 +11,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 import static gui.Main.X_DIM;
@@ -25,12 +23,13 @@ import tictactoe.Board.*;
 
 public class PlayController {
 
+    @FXML private VBox vbox;
+    @FXML private Canvas canvas;
+    @FXML private GraphicsContext gc;
+
     private AgentType player_X;
     private AgentType player_O;
     private Board gameboard;
-
-    public Canvas canvas = new Canvas();
-    public GraphicsContext gc;
 
     // Sets who is playing: HvH, HvB, or BvB, and the human's player.
     // Called by the StartController to pass in information.
@@ -57,6 +56,7 @@ public class PlayController {
         gc = canvas.getGraphicsContext2D();
 
         // draw the grid
+        vbox.setStyle("-fx-background-color: white");
         gc.setFill(Color.WHITE);
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(5);

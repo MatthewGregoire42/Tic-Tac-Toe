@@ -1,6 +1,7 @@
 package gui;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -13,13 +14,13 @@ import tictactoe.Board.*;
 
 public class StartController {
 
-    public ToggleGroup who = new ToggleGroup();
-    public ToggleGroup player = new ToggleGroup();
-    public RadioButton hvh_button = new RadioButton();
-    public RadioButton hvb_button = new RadioButton();
-    public RadioButton bvb_button = new RadioButton();
-    public RadioButton x_button = new RadioButton();
-    public RadioButton o_button = new RadioButton();
+    @FXML private ToggleGroup who = new ToggleGroup();
+    @FXML private ToggleGroup player = new ToggleGroup();
+    @FXML private RadioButton hvh_button = new RadioButton();
+    @FXML private RadioButton hvb_button = new RadioButton();
+    @FXML private RadioButton bvb_button = new RadioButton();
+    @FXML private RadioButton x_button = new RadioButton();
+    @FXML private RadioButton o_button = new RadioButton();
 
     private AgentType player_X;
     private AgentType player_O;
