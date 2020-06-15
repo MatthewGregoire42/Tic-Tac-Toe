@@ -11,7 +11,15 @@
             fx:controller="gui.AboutController"
             prefHeight="600.0" prefWidth="600.0" alignment="CENTER"
             spacing="40">
-    <Label text="Some about text"/>
+    <Label wrapText="true" maxWidth="300">
+        <text>
+            This is a simple Tic Tac Toe application that will let you play against another human,
+            play against a bot, or watch two bots play against each other. The goal for this project
+            is to implement a minimax algorithm to allow the bot to play perfectly, and then
+            apply the same code to a checkers AI.
+        </text>
+    </Label>
+    <Label text="by Matthew Gregoire, 2020"/>
     <Button fx:id="back" text="Back to Menu" onAction="#backToStart"/>
 
 </VBox>

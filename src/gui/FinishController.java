@@ -23,11 +23,13 @@ public class FinishController {
 
     private AgentType player_X;
     private AgentType player_O;
+    private int s;
 
-    public void setOptions(Player won, Image image, AgentType x, AgentType o) {
+    public void setOptions(Player won, Image image, AgentType x, AgentType o, int size) {
 
         player_X = x;
         player_O = o;
+        s = size;
 
         if (won == null) {
             label.setText("It's a tie!");
@@ -52,7 +54,7 @@ public class FinishController {
         Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
         window.setScene(playScene);
 
-        playController.setOptions(player_X, player_O);
+        playController.setOptions(player_X, player_O, s);
     }
 
     public void backToStart(ActionEvent e) throws Exception {

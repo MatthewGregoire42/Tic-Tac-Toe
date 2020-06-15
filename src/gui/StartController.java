@@ -15,12 +15,18 @@ import tictactoe.Board.*;
 public class StartController {
 
     @FXML private ToggleGroup who = new ToggleGroup();
-    @FXML private ToggleGroup player = new ToggleGroup();
     @FXML private RadioButton hvh_button = new RadioButton();
     @FXML private RadioButton hvb_button = new RadioButton();
     @FXML private RadioButton bvb_button = new RadioButton();
+
+    @FXML private ToggleGroup player = new ToggleGroup();
     @FXML private RadioButton x_button = new RadioButton();
     @FXML private RadioButton o_button = new RadioButton();
+
+    @FXML private ToggleGroup board_size = new ToggleGroup();
+    @FXML private RadioButton three = new RadioButton();
+    @FXML private RadioButton four = new RadioButton();
+    @FXML private RadioButton five = new RadioButton();
 
     private AgentType player_X;
     private AgentType player_O;
@@ -29,17 +35,24 @@ public class StartController {
         hvh_button.setToggleGroup(who);
         hvb_button.setToggleGroup(who);
         bvb_button.setToggleGroup(who);
+
         x_button.setToggleGroup(player);
         o_button.setToggleGroup(player);
 
+        three.setToggleGroup(board_size);
+        four.setToggleGroup(board_size);
+        five.setToggleGroup(board_size);
+
         who.selectToggle(hvb_button);
         player.selectToggle(x_button);
+        board_size.selectToggle(three);
     }
 
     // What to do when the user presses the "play" button.
     public void pressPlay(ActionEvent e) throws Exception {
         RadioButton who_is_button = (RadioButton) who.getSelectedToggle();
         RadioButton player_is_button = (RadioButton) player.getSelectedToggle();
+        RadioButton board_size_button = (RadioButton) board_size.getSelectedToggle();
 
         if (who_is_button.equals(hvh_button)) {
             player_X = AgentType.HUMAN;
@@ -57,6 +70,16 @@ public class StartController {
             player_O = AgentType.BOT;
         }
 
+        int s = 3;
+
+        if (board_size_button.equals(three)) {
+            s = 3;
+        } else if (board_size_button.equals(four)) {
+            s = 4;
+        } else {
+            s = 5;
+        }
+
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("Play.fxml"));
         Parent playParent = loader.load();
@@ -67,7 +90,7 @@ public class StartController {
         Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
         window.setScene(playScene);
 
-        playController.setOptions(player_X, player_O);
+        playController.setOptions(player_X, player_O, s);
     }
 
     // What to do when the user presses the "about" button.
