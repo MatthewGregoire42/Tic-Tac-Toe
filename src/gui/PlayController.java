@@ -1,5 +1,6 @@
 package gui;
 
+import ai.Agent;
 import ai.RandomAI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +31,7 @@ public class PlayController {
     private AgentType player_X;
     private AgentType player_O;
     private Board gameboard;
+    private Agent bot;
 
     // Sets who is playing: HvH, HvB, or BvB, and the human's player.
     // Called by the StartController to pass in information.
@@ -51,6 +53,7 @@ public class PlayController {
     public void initialize() {
         // Start up a new game
         gameboard = new Board(3);
+        bot = new RandomAI();
 
         // This is where we'll draw the game as it progresses
         gc = canvas.getGraphicsContext2D();
@@ -100,7 +103,7 @@ public class PlayController {
         } else {
             // If the bot needs to make a move, then let it.
             if (gameboard.whoHasTheTurn().equals(AgentType.BOT)) {
-                int[] move = RandomAI.chooseMove(gameboard);
+                int[] move = bot.chooseMove(gameboard);
                 drawMarker(move[0], move[1], gameboard.getTurn());
                 gameboard.applyMove(move[0], move[1]);
                 nextMove();

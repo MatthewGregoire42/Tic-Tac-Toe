@@ -14,10 +14,10 @@
     <VBox spacing="40"
           xmlns:fx="http://javafx.com/fxml"
           fx:id="vbox">
-        <Label text="Game over!" opacity="1"/>
-        <Label fx:id="label" opacity="1"/>
-        <Button text="Replay" onAction="#backToPlay" opacity="1"/>
-        <Button text="Back to Menu" onAction="#backToStart" opacity="1"/>
+        <Label text="Game over!"/>
+        <Label fx:id="label"/>
+        <Button text="Replay" onAction="#backToPlay"/>
+        <Button text="Back to Menu" onAction="#backToStart"/>
 
         <prefWidth>600</prefWidth>
         <prefHeight>600</prefHeight>

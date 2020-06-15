@@ -1,14 +1,19 @@
 package ai;
 
 import tictactoe.Board;
-import java.lang.Math;
 import java.util.ArrayList;
+import java.util.Random;
 
-public class RandomAI {
+public class RandomAI implements Agent {
 
-    public RandomAI() {}
+    private Random random;
 
-    public static int[] chooseMove(Board board) {
+    public RandomAI() {
+        random = new Random();
+    }
+
+    @Override
+    public int[] chooseMove(Board board) {
         int size = board.getSize();
         ArrayList<int[]> legal_moves = new ArrayList<int[]>();
         for (int i = 0; i < size; i++) {
@@ -20,7 +25,7 @@ public class RandomAI {
             }
         }
 
-        int[] move = legal_moves.get((int) Math.random()*legal_moves.size());
+        int[] move = legal_moves.get(random.nextInt(legal_moves.size()));
         return move;
     }
 
