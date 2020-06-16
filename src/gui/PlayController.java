@@ -20,8 +20,7 @@ import static gui.Main.X_DIM;
 import static gui.Main.Y_DIM;
 import tictactoe.Board;
 import tictactoe.Board.*;
-import ai.Agent;
-import ai.RandomAI;
+import ai.*;
 
 public class PlayController {
 
@@ -56,7 +55,7 @@ public class PlayController {
         drawBoard();
 
         // How to handle bot moves.
-        moveHandler = new BotMoveService(gameboard, new RandomAI());
+        moveHandler = new BotMoveService(gameboard, new MinimaxAI());
         moveHandler.setOnSucceeded( e -> {
             int[] move = moveHandler.getValue();
             drawMarker(move[0], move[1], gameboard.getTurn());

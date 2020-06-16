@@ -136,7 +136,13 @@ public class Board {
     }
 
     public Board copy() {
-        return new Board(size, board, turn);
+        Player[][] copiedBoard = new Player[size][size];
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                copiedBoard[i][j] = board[i][j];
+            }
+        }
+        return new Board(size, copiedBoard, turn);
     }
 
 }
