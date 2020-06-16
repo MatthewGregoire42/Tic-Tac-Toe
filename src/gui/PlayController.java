@@ -1,54 +1,65 @@
 package gui;
 
-import ai.Agent;
-import ai.RandomAI;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 import static gui.Main.X_DIM;
 import static gui.Main.Y_DIM;
-import javafx.scene.paint.ImagePattern;
-import javafx.stage.Stage;
 import tictactoe.Board;
 import tictactoe.Board.*;
+import ai.Agent;
+import ai.RandomAI;
 
 public class PlayController {
 
     @FXML private VBox vbox;
     @FXML private Canvas canvas;
-    @FXML private GraphicsContext gc;
+    private GraphicsContext gc;
 
     private AgentType player_X;
     private AgentType player_O;
     private Board gameboard;
-    private Agent bot;
+    private BotMoveService moveHandler;
 
     // Sets who is playing: HvH, HvB, or BvB, and the human's player.
+    // Then starts the game.
     // Called by the StartController to pass in information.
     public void setOptions(AgentType x, AgentType o, int s) {
         player_X = x;
         player_O = o;
 
-        gameboard = new Board(s);
-        // We can't set these values in the Board
-        // constructor, or in initialize(),
+        // We can't set these values in initialize(),
         // so we have to be sure to set them here.
+        gameboard = new Board(s);
         gameboard.setPlayer(Player.X, player_X);
         gameboard.setPlayer(Player.O, player_O);
+
+        moveHandler = new BotMoveService(gameboard, new RandomAI());
+        // Apply bot moves to the gameboard, and draw them.
+        moveHandler.setOnSucceeded( e -> {
+            int[] move = moveHandler.getValue();
+            drawMarker(move[0], move[1], gameboard.getTurn());
+            gameboard.applyMove(move[0], move[1]);
+
+            if (gameboard.isOver()) {
+                transitionToFinish();
+            } else {
+                nextMove();
+            }
+        });
 
         drawBoard();
 
@@ -59,14 +70,8 @@ public class PlayController {
     }
 
     public void initialize() {
-        // Start up a new game
-        bot = new RandomAI();
-
         // This is where we'll draw the game as it progresses
         gc = canvas.getGraphicsContext2D();
-
-        // draw the grid
-        vbox.setStyle("-fx-background-color: white");
         gc.setFill(Color.WHITE);
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(5);
@@ -112,42 +117,10 @@ public class PlayController {
     private void nextMove() {
         // If the bot needs to make a move, then let it.
         if (gameboard.whoHasTheTurn().equals(AgentType.BOT)) {
-
-            // Also use concurrency to let the UI remain responsive while
-            // the bot is thinking.
-            Service<int[]> thinking = new Service<int[]>() {
-                @Override
-                protected Task<int[]> createTask() {
-                    return new Task<int[]>() {
-                        protected int[] call() throws Exception {
-                            Thread.sleep(200);
-                            int[] move = bot.chooseMove(gameboard);
-                            return move;
-                        }
-                    };
-                }
-            };
-
-            thinking.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                @Override
-                public void handle(WorkerStateEvent event) {
-                    int[] move = thinking.getValue();
-                    drawMarker(move[0], move[1], gameboard.getTurn());
-                    gameboard.applyMove(move[0], move[1]);
-
-                    if (gameboard.isOver()) {
-                        transitionToFinish();
-                    } else {
-                        nextMove();
-                    }
-                }
-            });
-
-            thinking.restart();
+            moveHandler.restart();
         }
     }
 
-    // TODO: Make this general for any board size
     private void drawMarker(int x, int y, Player player) {
         int s = gameboard.getSize();
         if (player.equals(Player.X)) {

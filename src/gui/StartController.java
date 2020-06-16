@@ -93,7 +93,7 @@ public class StartController {
         playController.setOptions(player_X, player_O, s);
     }
 
-    // What to do when the user presses the "about" button.
+    // Switch to "About" scene when the user presses the "About" button.
     public void pressAbout(ActionEvent e) throws Exception {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("About.fxml"));

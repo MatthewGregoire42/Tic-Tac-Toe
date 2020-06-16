@@ -36,10 +36,7 @@ public class FinishController {
         } else {
             label.setText("Player " + won.toString() + " wins!");
         }
-        BackgroundFill background_fill = new BackgroundFill(Color.PINK,
-                CornerRadii.EMPTY, Insets.EMPTY);
-        Background background = new Background(background_fill);
-        vbox.setBackground(background);
+        vbox.setStyle("-fx-background-color: rgba(255, 175, 175, 0.8);");
         imgView.setImage(image);
     }
 

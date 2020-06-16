@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.scene.canvas.*;
@@ -28,13 +29,14 @@ public class Main extends Application {
         VBox vbox_start = start_loader.<VBox>load();
         Scene scene = new Scene(vbox_start, X_DIM, Y_DIM);
 
+        primaryStage.getIcons().add(new Image("gui/icon.png"));
+
         primaryStage.setScene(scene);
         primaryStage.setTitle("Tic Tac Toe");
         primaryStage.show();
     }
 
     public static void main(String[] args) {
-        System.out.println(System.getProperty("user.dir"));
         launch(args);
     }
 }
