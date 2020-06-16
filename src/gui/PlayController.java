@@ -37,18 +37,26 @@ public class PlayController {
     // Sets who is playing: HvH, HvB, or BvB, and the human's player.
     // Then starts the game.
     // Called by the StartController to pass in information.
-    public void setOptions(AgentType x, AgentType o, int s) {
-        player_X = x;
-        player_O = o;
+    // The initializer for this class is basically useless, because
+    // we need so much information from the Start screen before the
+    // Play screen can do anything.
+    public void setOptions(AgentType X, AgentType O, int s) {
+        player_X = X;
+        player_O = O;
 
-        // We can't set these values in initialize(),
-        // so we have to be sure to set them here.
         gameboard = new Board(s);
         gameboard.setPlayer(Player.X, player_X);
         gameboard.setPlayer(Player.O, player_O);
 
+        // This is where we'll draw the game as it progresses
+        gc = canvas.getGraphicsContext2D();
+        gc.setFill(Color.WHITE);
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(5);
+        drawBoard();
+
+        // How to handle bot moves.
         moveHandler = new BotMoveService(gameboard, new RandomAI());
-        // Apply bot moves to the gameboard, and draw them.
         moveHandler.setOnSucceeded( e -> {
             int[] move = moveHandler.getValue();
             drawMarker(move[0], move[1], gameboard.getTurn());
@@ -57,42 +65,22 @@ public class PlayController {
             if (gameboard.isOver()) {
                 transitionToFinish();
             } else {
-                nextMove();
+                botMove();
             }
         });
 
-        drawBoard();
-
-        // Start the game off if a bot is X.
-        if (player_X.equals(AgentType.BOT)) {
-            nextMove();
-        }
-    }
-
-    public void initialize() {
-        // This is where we'll draw the game as it progresses
-        gc = canvas.getGraphicsContext2D();
-        gc.setFill(Color.WHITE);
-        gc.setStroke(Color.BLACK);
-        gc.setLineWidth(5);
-
-        // Handle human moves
+        // How to handle human moves.
         canvas.setOnMouseClicked(e -> {
-            // Make sure that the player is actually human before proceeding
             if (gameboard.whoHasTheTurn().equals(AgentType.HUMAN)) {
                 int x = (int) (e.getX() / (X_DIM/gameboard.getSize()));
                 int y = (int) (e.getY() / (Y_DIM/gameboard.getSize()));
                 humanMove(x, y);
             }
         });
-    }
 
-    private void drawBoard() {
-        int s = gameboard.getSize();
-
-        for (int i = 1; i < s; i++) {
-            gc.strokeLine(i*X_DIM/s, 0, i*X_DIM/s, Y_DIM);
-            gc.strokeLine(0, i*Y_DIM/s, X_DIM, i*Y_DIM/s);
+        // Start the game off if a bot is X.
+        if (player_X.equals(AgentType.BOT)) {
+            botMove();
         }
     }
 
@@ -108,39 +96,50 @@ public class PlayController {
             if (gameboard.isOver()) {
                 transitionToFinish();
             } else {
-                nextMove();
+                botMove();
             }
         }
     }
 
     // Applies a bot move, if necessary.
-    private void nextMove() {
+    private void botMove() {
         // If the bot needs to make a move, then let it.
         if (gameboard.whoHasTheTurn().equals(AgentType.BOT)) {
             moveHandler.restart();
         }
     }
 
-    private void drawMarker(int x, int y, Player player) {
+    private void drawBoard() {
         int s = gameboard.getSize();
-        if (player.equals(Player.X)) {
-            int x_start1 = X_DIM / (s*3) + (x * X_DIM) / s;
-            int y_start1 = Y_DIM / (s*3) + (y * Y_DIM) / s;
-            int x_end1 = 2 * X_DIM / (s*3) + (x * X_DIM) / s;
-            int y_end1 = 2 * Y_DIM / (s*3) + (y * Y_DIM) / s;
-            int x_start2 = 2 * X_DIM / (s*3) + (x * X_DIM) / s;
-            int y_start2 = Y_DIM / (s*3) + (y * Y_DIM) / s;
-            int x_end2 = X_DIM / (s*3) + (x * X_DIM) / s;
-            int y_end2 = 2 * Y_DIM / (s*3) + (y * Y_DIM) / s;
-            gc.strokeLine(x_start1, y_start1, x_end1, y_end1);
-            gc.strokeLine(x_start2, y_start2, x_end2, y_end2);
-        } else {
-            gc.strokeOval((x*X_DIM)/s + X_DIM/(s*3), (y*Y_DIM)/s + Y_DIM/(s*3), X_DIM/(s*3), Y_DIM/(s*3));
+
+        for (int i = 1; i < s; i++) {
+            gc.strokeLine(i*X_DIM/s, 0, i*X_DIM/s, Y_DIM);
+            gc.strokeLine(0, i*Y_DIM/s, X_DIM, i*Y_DIM/s);
         }
     }
 
-    private void transitionToFinish() {
+    private void drawMarker(int x, int y, Player player) {
+        int s = gameboard.getSize();
+        if (player.equals(Player.X)) {
+            int x_start1 = X_DIM / (s*4) + (x * X_DIM) / s;
+            int y_start1 = Y_DIM / (s*4) + (y * Y_DIM) / s;
+            int x_end1 = 3 * X_DIM / (s*4) + (x * X_DIM) / s;
+            int y_end1 = 3 * Y_DIM / (s*4) + (y * Y_DIM) / s;
+            int x_start2 = 3 * X_DIM / (s*4) + (x * X_DIM) / s;
+            int y_start2 = Y_DIM / (s*4) + (y * Y_DIM) / s;
+            int x_end2 = X_DIM / (s*4) + (x * X_DIM) / s;
+            int y_end2 = 3 * Y_DIM / (s*4) + (y * Y_DIM) / s;
+            gc.strokeLine(x_start1, y_start1, x_end1, y_end1);
+            gc.strokeLine(x_start2, y_start2, x_end2, y_end2);
+        } else {
+            gc.strokeOval((x*X_DIM)/s + X_DIM/(s*5), (y*Y_DIM)/s + Y_DIM/(s*5),
+                    3*X_DIM/(s*5), 3*Y_DIM/(s*5));
+        }
+    }
 
+    // Execute this code when the game ends. We need to do the song and dance
+    // with a new Service in order to add a one second pause.
+    private void transitionToFinish() {
         Service<Void> pause = new Service<Void>() {
             @Override
             protected Task<Void> createTask() {
@@ -153,7 +152,6 @@ public class PlayController {
                 };
             }
         };
-
         pause.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {
@@ -180,9 +178,7 @@ public class PlayController {
                 window.setScene(finishScene);
             }
         });
-
         pause.restart();
-
     }
 
 }

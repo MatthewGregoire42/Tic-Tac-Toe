@@ -17,7 +17,6 @@ import tictactoe.Board.*;
 
 public class FinishController {
 
-    @FXML private VBox vbox;
     @FXML private Label label;
     @FXML private ImageView imgView;
 
@@ -25,6 +24,9 @@ public class FinishController {
     private AgentType player_O;
     private int s;
 
+    // The Finish screen needs to know who won and the final board state to set as
+    // the background. It also needs to know who played as X and O and what size the
+    // board was, in case the user wants to play again with the same settings.
     public void setOptions(Player won, Image image, AgentType x, AgentType o, int size) {
 
         player_X = x;
@@ -36,11 +38,10 @@ public class FinishController {
         } else {
             label.setText("Player " + won.toString() + " wins!");
         }
-        vbox.setStyle("-fx-background-color: rgba(255, 175, 175, 0.8);");
         imgView.setImage(image);
     }
 
-    public void backToPlay(ActionEvent e) throws Exception {
+    @FXML private void backToPlay(ActionEvent e) throws Exception {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("Play.fxml"));
         Parent playParent = loader.load();
@@ -54,7 +55,7 @@ public class FinishController {
         playController.setOptions(player_X, player_O, s);
     }
 
-    public void backToStart(ActionEvent e) throws Exception {
+    @FXML private void backToStart(ActionEvent e) throws Exception {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("Start.fxml"));
         Parent startParent = loader.load();

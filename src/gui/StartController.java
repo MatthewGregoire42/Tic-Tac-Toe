@@ -31,7 +31,7 @@ public class StartController {
     private AgentType player_X;
     private AgentType player_O;
 
-    public void initialize() {
+    @FXML private void initialize() {
         hvh_button.setToggleGroup(who);
         hvb_button.setToggleGroup(who);
         bvb_button.setToggleGroup(who);
@@ -49,7 +49,7 @@ public class StartController {
     }
 
     // What to do when the user presses the "play" button.
-    public void pressPlay(ActionEvent e) throws Exception {
+    @FXML private void pressPlay(ActionEvent e) throws Exception {
         RadioButton who_is_button = (RadioButton) who.getSelectedToggle();
         RadioButton player_is_button = (RadioButton) player.getSelectedToggle();
         RadioButton board_size_button = (RadioButton) board_size.getSelectedToggle();
@@ -94,7 +94,7 @@ public class StartController {
     }
 
     // Switch to "About" scene when the user presses the "About" button.
-    public void pressAbout(ActionEvent e) throws Exception {
+    @FXML private void pressAbout(ActionEvent e) throws Exception {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("About.fxml"));
         Parent aboutParent = loader.load();
