@@ -14,23 +14,20 @@ public class Board {
 
     private int size;
     private Player[][] board;
-    // Who needs to go next
-    private Player turn;
+    private Player turn; // The player who needs to go next.
     private HashMap<Player, AgentType> identities;
 
     public Board(int size) {
-
         this.size = size;
         this.board = new Player[size][size];
         this.turn = Player.X;
-
         this.identities = new HashMap<Player, AgentType>();
     }
 
-    private Board(int _size, Player[][] _board, Player _turn) {
-        size = _size;
-        board = _board;
-        turn = _turn;
+    private Board(int size, Player[][] board, Player turn) {
+        this.size = size;
+        this.board = board;
+        this.turn = turn;
     }
 
     public boolean isLegalMove(int x, int y) {
@@ -43,7 +40,7 @@ public class Board {
         } else {
             throw new RuntimeException("Attempted illegal move at " + x + ", " + y);
         }
-        if (turn == Player.X) {
+        if (turn.equals(Player.X)) {
             turn = Player.O;
         } else {
             turn = Player.X;
@@ -128,10 +125,6 @@ public class Board {
 
     public Player getTurn() {
         return turn;
-    }
-
-    public HashMap<Player, AgentType> getIdentities() {
-        return identities;
     }
 
     public void setPlayer(Player key, AgentType value) {

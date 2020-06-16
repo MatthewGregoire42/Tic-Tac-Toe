@@ -1,8 +1,9 @@
 package ai;
 
-import tictactoe.Board;
 import java.util.ArrayList;
 import java.util.Random;
+
+import tictactoe.Board;
 
 public class RandomAI implements Agent {
 
