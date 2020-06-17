@@ -1,10 +1,10 @@
 package ai;
 
-import tictactoe.Board;
-import tictactoe.Board.*;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import tictactoe.Board;
+import tictactoe.Board.*;
 
 public class MinimaxAI implements Agent {
 

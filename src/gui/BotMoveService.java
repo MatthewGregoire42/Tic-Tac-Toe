@@ -1,8 +1,9 @@
 package gui;
 
-import ai.Agent;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+
+import ai.Agent;
 import tictactoe.Board;
 
 // Because we're putting the code to handle the bot thinking
