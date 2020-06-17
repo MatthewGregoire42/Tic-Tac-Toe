@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.Group;
@@ -25,9 +26,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader start_loader = new FXMLLoader(getClass().getResource("Start.fxml"));
-        VBox vbox_start = start_loader.<VBox>load();
-        Scene scene = new Scene(vbox_start, X_DIM, Y_DIM);
+        FXMLLoader startLoader = new FXMLLoader(getClass().getResource("Start.fxml"));
+        VBox start = startLoader.<VBox>load();
+        Scene scene = new Scene(start, X_DIM, Y_DIM);
 
         primaryStage.getIcons().add(new Image("gui/icon.png"));
 
