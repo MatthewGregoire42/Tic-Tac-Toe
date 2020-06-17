@@ -15,6 +15,7 @@
           fx:id="vbox">
         <style>
             -fx-background-color: rgba(255, 175, 175, 0.8);
+            -fx-font: 24 system;
         </style>
         <Label text="Game over!"/>
         <Label fx:id="label"/>
