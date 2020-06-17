@@ -24,10 +24,9 @@ import ai.*;
 
 public class PlayController {
 
-    @FXML private VBox vbox;
     @FXML private Canvas canvas;
     private GraphicsContext gc;
-
+    private String botType;
     private AgentType player_X;
     private AgentType player_O;
     private Board gameboard;
@@ -39,9 +38,10 @@ public class PlayController {
     // The initializer for this class is basically useless, because
     // we need so much information from the Start screen before the
     // Play screen can do anything.
-    public void setOptions(AgentType X, AgentType O, int s) {
+    public void setOptions(AgentType X, AgentType O, int s, String botType) {
         player_X = X;
         player_O = O;
+        this.botType = botType;
 
         gameboard = new Board(s);
         gameboard.setPlayer(Player.X, player_X);
@@ -54,8 +54,15 @@ public class PlayController {
         gc.setLineWidth(5);
         drawBoard();
 
+        Agent bot;
+        if (botType.equals("random")) {
+            bot = new RandomAI();
+        } else {
+            bot = new MinimaxAI();
+        }
+
         // How to handle bot moves.
-        moveHandler = new BotMoveService(gameboard, new MinimaxAI());
+        moveHandler = new BotMoveService(gameboard, bot);
         moveHandler.setOnSucceeded( e -> {
             int[] move = moveHandler.getValue();
             drawMarker(move[0], move[1], gameboard.getTurn());
@@ -169,7 +176,7 @@ public class PlayController {
                 }
                 FinishController finishController = loader.getController();
                 finishController.setOptions(gameboard.findWinner(), finalState,
-                        player_X, player_O, gameboard.getSize());
+                        player_X, player_O, gameboard.getSize(), botType);
 
                 // 3. Display the finish scene in the window.
                 Scene finishScene = new Scene(finishParent);

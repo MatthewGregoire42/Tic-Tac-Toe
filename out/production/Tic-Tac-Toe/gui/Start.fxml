@@ -14,6 +14,11 @@
         <RadioButton text="5" toggleGroup="$board_size" fx:id="five"/>
     </HBox>
     <HBox spacing="20" alignment="CENTER">
+        <Label text="Which bot?"/>
+        <RadioButton text="Random AI" toggleGroup="$whichBot" fx:id="random"/>
+        <RadioButton text="Minimax AI" toggleGroup="$whichBot" fx:id="minimax"/>
+    </HBox>
+    <HBox spacing="20" alignment="CENTER">
         <RadioButton text="Human vs. Human" toggleGroup="$who" fx:id="hvh_button"/>
         <RadioButton text="Human vs. Bot" toggleGroup="$who" fx:id="hvb_button"/>
         <RadioButton text="Bot vs. Bot" toggleGroup="$who" fx:id="bvb_button"/>

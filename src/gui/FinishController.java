@@ -23,15 +23,17 @@ public class FinishController {
     private AgentType player_X;
     private AgentType player_O;
     private int s;
+    private String bot;
 
     // The Finish screen needs to know who won and the final board state to set as
     // the background. It also needs to know who played as X and O and what size the
     // board was, in case the user wants to play again with the same settings.
-    public void setOptions(Player won, Image image, AgentType x, AgentType o, int size) {
+    public void setOptions(Player won, Image image, AgentType x, AgentType o, int size, String botType) {
 
         player_X = x;
         player_O = o;
         s = size;
+        bot = botType;
 
         if (won == null) {
             label.setText("It's a tie!");
@@ -52,7 +54,7 @@ public class FinishController {
         Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
         window.setScene(playScene);
 
-        playController.setOptions(player_X, player_O, s);
+        playController.setOptions(player_X, player_O, s, bot);
     }
 
     @FXML private void backToStart(ActionEvent e) throws Exception {
