@@ -9,7 +9,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
@@ -18,27 +17,35 @@ import tictactoe.Board.*;
 public class StartController {
 
     @FXML private ToggleGroup who = new ToggleGroup();
-    @FXML private ToggleButton hvh_button = new RadioButton();
-    @FXML private ToggleButton hvb_button = new RadioButton();
-    @FXML private ToggleButton bvb_button = new RadioButton();
+    @FXML private RadioButton hvh_button = new RadioButton();
+    @FXML private RadioButton hvb_button = new RadioButton();
+    @FXML private RadioButton bvb_button = new RadioButton();
 
     @FXML private ToggleGroup player = new ToggleGroup();
-    @FXML private ToggleButton x_button = new RadioButton();
-    @FXML private ToggleButton o_button = new RadioButton();
+    @FXML private RadioButton x_button = new RadioButton();
+    @FXML private RadioButton o_button = new RadioButton();
 
     @FXML private ToggleGroup board_size = new ToggleGroup();
-    @FXML private ToggleButton three = new RadioButton();
-    @FXML private ToggleButton four = new RadioButton();
-    @FXML private ToggleButton five = new RadioButton();
+    @FXML private RadioButton three = new RadioButton();
+    @FXML private RadioButton four = new RadioButton();
+    @FXML private RadioButton five = new RadioButton();
 
     @FXML private ToggleGroup whichBot = new ToggleGroup();
-    @FXML private ToggleButton random = new RadioButton();
-    @FXML private ToggleButton minimax = new RadioButton();
+    @FXML private RadioButton random = new RadioButton();
+    @FXML private RadioButton minimax = new RadioButton();
 
     private AgentType player_X;
     private AgentType player_O;
 
     @FXML private void initialize() {
+
+        RadioButton[] buttons = {hvh_button, hvb_button, bvb_button, x_button, o_button,
+        three, four, five, random, minimax};
+
+        for (RadioButton button : buttons) {
+            button.getStyleClass().remove("radio-button");
+            button.getStyleClass().add("toggle-button");
+        }
 
         hvh_button.setToggleGroup(who);
         hvb_button.setToggleGroup(who);
@@ -92,10 +99,10 @@ public class StartController {
 
     // What to do when the user presses the "play" button.
     @FXML private void pressPlay(ActionEvent e) throws Exception {
-        ToggleButton who_is_button = (ToggleButton) who.getSelectedToggle();
-        ToggleButton player_is_button = (ToggleButton) player.getSelectedToggle();
-        ToggleButton board_size_button = (ToggleButton) board_size.getSelectedToggle();
-        ToggleButton bot_button = (ToggleButton) whichBot.getSelectedToggle();
+        RadioButton who_is_button = (RadioButton) who.getSelectedToggle();
+        RadioButton player_is_button = (RadioButton) player.getSelectedToggle();
+        RadioButton board_size_button = (RadioButton) board_size.getSelectedToggle();
+        RadioButton bot_button = (RadioButton) whichBot.getSelectedToggle();
 
         if (who_is_button.equals(hvh_button)) {
             player_X = AgentType.HUMAN;
