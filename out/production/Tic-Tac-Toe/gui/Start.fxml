@@ -13,7 +13,7 @@
         -fx-font: 16 system;
     </style>
     <Label>
-        <text>Tic-Tac-Toe!</text>
+        <text>Tic Tac Toe!</text>
         <style>-fx-font: 34 system;</style>
     </Label>
     <HBox spacing="20" alignment="CENTER">
